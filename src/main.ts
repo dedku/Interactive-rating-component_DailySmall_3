@@ -2,11 +2,11 @@ import './style.css'
 
 // TODO ADD TESTS
 
-const NUMBER_ARRAY: string[] = []
+let NUMBER_ARRAY: number = 0
 
 function initProject(): void {
-    const nodeButtons: NodeListOf<Element> = document.querySelectorAll('.rating-button')
-    const buttons: Element[] = Array.from(nodeButtons)
+    const nodeButtons = document.querySelectorAll('.rating-button') as NodeListOf<Element>
+    const buttons = Array.from(nodeButtons) as HTMLDivElement[]
 
     const submit = document.querySelector('.cta') as HTMLButtonElement
 
@@ -14,16 +14,15 @@ function initProject(): void {
     addOrRemoveActiveButton(buttons)
 }
 
-function addOrRemoveActiveButton(buttonsArray: Element[]): void {
+function addOrRemoveActiveButton(buttonsArray: HTMLDivElement[]): void {
     for (const button of buttonsArray) {
         button.addEventListener('click', () => {
-            if (button.classList.contains('active')) {
-                button.classList.remove('active')
-                removeFromArray(button.innerHTML)
-            } else {
-                button.classList.add('active')
-                addToArray(button.innerHTML)
-            }
+            buttonsArray.forEach(btn => {
+                btn.classList.remove('active')
+                removeFromArray()
+            })
+            button.classList.add('active')
+            addToArray(button.innerHTML)
         })
     }
 }
@@ -40,20 +39,16 @@ function nextStepSubmit(subElement: HTMLButtonElement): void {
 }
 
 function addToArray(num: string): void {
-    NUMBER_ARRAY.push(num)
+    NUMBER_ARRAY = Number(num)
 }
 
-function removeFromArray(num: string): void {
-    const indexOfNumber = NUMBER_ARRAY.indexOf(num)
-
-    if (!indexOfNumber) return
-
-    NUMBER_ARRAY.splice(indexOfNumber, 1)
+function removeFromArray(): void {
+    NUMBER_ARRAY = 0
 }
 
 function addInnerHtmlWithArrayLength() {
     document.querySelector('.selected-rating')!.innerHTML = `
-    <h5>You selected ${NUMBER_ARRAY.length} out of 5</h5>
+    <h5>You selected ${NUMBER_ARRAY} out of 5</h5>
     `
 }
 
